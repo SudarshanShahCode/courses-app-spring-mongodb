@@ -1,6 +1,7 @@
 package dev.courses.services.impl;
 
 import dev.courses.entities.Course;
+import dev.courses.exceptions.CourseNotFoundException;
 import dev.courses.repositories.CourseRepository;
 import dev.courses.services.CourseService;
 import org.springframework.stereotype.Service;
@@ -30,13 +31,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course getCourse(String courseId) {
         return this.courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("No course found with CourseID : " + courseId));
+                .orElseThrow(() -> new CourseNotFoundException("No course found with CourseID : " + courseId));
     }
 
     @Override
     public Course updateCourse(String courseId, Course course) {
         Course course1 = this.courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("No course found with CourseID : " + courseId));
+                .orElseThrow(() -> new CourseNotFoundException("No course found with CourseID : " + courseId));
 
         Course updatedCourse = new Course(courseId,
                                         course.courseName(),
@@ -51,7 +52,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Map<String, String> deleteCourse(String courseId) {
         Course course = this.courseRepository.findById(courseId)
-                .orElseThrow(() -> new RuntimeException("No course found with CourseID : " + courseId));
+                .orElseThrow(() -> new CourseNotFoundException("No course found with CourseID : " + courseId));
         this.courseRepository.delete(course);
         return Map.of("Message", "Course with CourseId : " + courseId + " deleted successfully.");
     }
