@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/courses")
@@ -53,4 +54,50 @@ public class CourseController {
     public ResponseEntity<List<Course>> getAllCourses() {
         return ResponseEntity.ok(this.courseService.getAllCourses());
     }
+
+    @Operation(
+            summary = "Get One Course",
+            description = "We will get course with given ID",
+            tags = {"courses", "get"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = Course.class),
+                            mediaType = "application/json")})
+    })
+    @GetMapping("/{courseId}")
+    public ResponseEntity<Course> getCourse(@PathVariable String courseId) {
+        return ResponseEntity.ok(this.courseService.getCourse(courseId));
+    }
+
+    @Operation(
+            summary = "Update Course by ID",
+            description = "We will update course with given ID",
+            tags = {"courses", "put"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = Course.class),
+                            mediaType = "application/json")})
+    })
+    @PutMapping("/{courseId}")
+    public ResponseEntity<Course> updateCourse(@PathVariable String courseId, @RequestBody Course course) {
+        return ResponseEntity.ok(this.courseService.updateCourse(courseId, course));
+    }
+
+    @Operation(
+            summary = "Delete Course by ID",
+            description = "We will delete course with given ID",
+            tags = {"courses", "delete"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = Map.class),
+                            mediaType = "application/json")})
+    })
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Map<String, String>> deleteCourse(@PathVariable String courseId) {
+        return ResponseEntity.ok(this.courseService.deleteCourse(courseId));
+    }
+
 }

@@ -3,6 +3,7 @@ package dev.courses.services;
 import dev.courses.entities.Course;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CourseService {
 
@@ -19,5 +20,5 @@ public interface CourseService {
     Course updateCourse(String courseId, Course course);
 
     // delete course
-    String deleteCourse(String courseId);
+    Map<String, String> deleteCourse(String courseId);
 }

@@ -6,6 +6,7 @@ import dev.courses.services.CourseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -28,16 +29,30 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course getCourse(String courseId) {
-        return null;
+        return this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("No course found with CourseID : " + courseId));
     }
 
     @Override
     public Course updateCourse(String courseId, Course course) {
-        return null;
+        Course course1 = this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("No course found with CourseID : " + courseId));
+
+        Course updatedCourse = new Course(courseId,
+                                        course.courseName(),
+                                        course.instructor(),
+                                        course.courseFee(),
+                                        course.duration(),
+                                        course.isCourseLive());
+
+        return this.courseRepository.save(updatedCourse);
     }
 
     @Override
-    public String deleteCourse(String courseId) {
-        return "";
+    public Map<String, String> deleteCourse(String courseId) {
+        Course course = this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("No course found with CourseID : " + courseId));
+        this.courseRepository.delete(course);
+        return Map.of("Message", "Course with CourseId : " + courseId + " deleted successfully.");
     }
 }
