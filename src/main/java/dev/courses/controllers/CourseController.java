@@ -1,6 +1,7 @@
 package dev.courses.controllers;
 
 import dev.courses.entities.Course;
+import dev.courses.entities.ResponseDto;
 import dev.courses.services.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -98,6 +99,37 @@ public class CourseController {
     @DeleteMapping("/{courseId}")
     public ResponseEntity<Map<String, String>> deleteCourse(@PathVariable String courseId) {
         return ResponseEntity.ok(this.courseService.deleteCourse(courseId));
+    }
+
+    @Operation(
+            summary = "Find all courses by Instructor and Course Fee",
+            description = "We will find all courses using Aggregation pipeline stages",
+            tags = {"courses", "get"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = List.class),
+                            mediaType = "application/json")})
+    })
+    @GetMapping("/instructor/{instructor}/courseFee/{courseFee}")
+    public ResponseEntity<List<Course>> findByInstructorAndCourseFee(@PathVariable String instructor,
+                                                                     @PathVariable Double courseFee) {
+        return ResponseEntity.ok(this.courseService.findByInstructorAndCourseFee(instructor, courseFee));
+    }
+
+    @Operation(
+            summary = "Find aggregate result about given Instructor",
+            description = "We will find aggregate result about given Instructor",
+            tags = {"courses", "get"}
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = ResponseDto.class),
+                            mediaType = "application/json")})
+    })
+    @GetMapping("/instructor/{instructor}")
+    public ResponseEntity<ResponseDto> findByInstructorMatchAndGroup(@PathVariable String instructor) {
+        return ResponseEntity.ok(this.courseService.findByInstructorMatchAndGroup(instructor));
     }
 
 }

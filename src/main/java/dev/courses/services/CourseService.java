@@ -1,6 +1,7 @@
 package dev.courses.services;
 
 import dev.courses.entities.Course;
+import dev.courses.entities.ResponseDto;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,9 @@ public interface CourseService {
 
     // delete course
     Map<String, String> deleteCourse(String courseId);
+
+    // find all courses by Instructor and Course Fee
+    List<Course> findByInstructorAndCourseFee(String instructor, Double courseFee);
+
+    ResponseDto findByInstructorMatchAndGroup(String instructor);
 }
